@@ -17,12 +17,12 @@ public interface ClassDef {
 	public void setExtends(ClassDef cd);
 	
 	@Adjacency(label="implements")
-	public Iterator<ClassDef> getImplements();	
+	public Iterable<ClassDef> getImplements();	
 	@Adjacency(label="implements")
 	public void addImplements(ClassDef cd);
 	
 	@Adjacency(label="method")
-	public Iterator<MethodDef> getMethods();	
+	public Iterable<MethodDef> getMethods();	
 	@Adjacency(label="method")
 	public void addMethod(MethodDef cd);	
 }

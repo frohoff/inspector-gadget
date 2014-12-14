@@ -11,7 +11,7 @@ public interface MethodDef {
   public void setName(String name);
   
   @Adjacency(label="parameterType")
-  public Iterator<ClassDef> getParameterTypes();
+  public Iterable<ClassDef> getParameterTypes();
   @Adjacency(label="parameterType")
   public void addParamterType(ClassDef cd);
   
