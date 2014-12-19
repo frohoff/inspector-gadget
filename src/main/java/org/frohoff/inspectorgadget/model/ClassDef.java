@@ -1,20 +1,13 @@
 package org.frohoff.inspectorgadget.model;
-import java.util.Iterator;
 
 import com.tinkerpop.frames.Adjacency;
-import com.tinkerpop.frames.Property;
+import com.tinkerpop.frames.modules.typedgraph.TypeValue;
 
-
-public interface ClassDef {
-	@Property("name")
-	public String getName();
-	@Property("name")
-	public void setName(String name);
-	
+@TypeValue("class") public interface ClassDef extends BaseDef {
 	@Adjacency(label="extends")
-	public ClassDef getExtends();
+	public Iterable<ClassDef> getExtends();
 	@Adjacency(label="extends")
-	public void setExtends(ClassDef cd);
+	public void addExtends(ClassDef cd);
 	
 	@Adjacency(label="implements")
 	public Iterable<ClassDef> getImplements();	

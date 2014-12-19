@@ -1,15 +1,9 @@
 package org.frohoff.inspectorgadget.model;
-import java.util.Iterator;
 
 import com.tinkerpop.frames.Adjacency;
-import com.tinkerpop.frames.Property;
+import com.tinkerpop.frames.modules.typedgraph.TypeValue;
 
-public interface MethodDef {
-  @Property("name")
-  public String getName();
-  @Property("name")
-  public void setName(String name);
-  
+@TypeValue("method") public interface MethodDef extends BaseDef {
   @Adjacency(label="parameterType")
   public Iterable<ClassDef> getParameterTypes();
   @Adjacency(label="parameterType")
@@ -19,4 +13,9 @@ public interface MethodDef {
   public ClassDef getReturnType();
   @Adjacency(label="returnType")
   public void setReturnType(ClassDef cd);
+  
+  @Adjacency(label="calls")
+  public Iterable<MethodDef> getCalls();
+  @Adjacency(label="calls")
+  public void addCall(MethodDef method);
 }
