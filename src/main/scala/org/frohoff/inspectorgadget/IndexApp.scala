@@ -1,6 +1,6 @@
 package org.frohoff.inspectorgadget
 
-
+import javassist._
 import scala.collection.JavaConversions._
 import java.io.File
 import java.util.jar.JarFile
@@ -9,7 +9,6 @@ import org.frohoff.inspectorgadget.model._
 import com.tinkerpop.blueprints.impls.tg.TinkerGraph
 import com.tinkerpop.frames.FramedGraphFactory
 import com.tinkerpop.frames.modules.gremlingroovy.GremlinGroovyModule
-import javassist._
 import com.tinkerpop.gremlin.groovy.console.Console
 import scala.collection.mutable.MutableList
 import javassist.expr.ExprEditor
@@ -17,8 +16,12 @@ import javassist.expr.MethodCall
 import com.tinkerpop.frames.modules.typedgraph.TypedGraphModuleBuilder
 
 
+
 object IndexApp extends App {
   println( "Start" )
+  
+  // TODO refactor and cleanup
+  // TODO mark/separate direct vs transitive edges
   
   val f = new FramedGraphFactory(
       new GremlinGroovyModule(), 
@@ -41,8 +44,8 @@ object IndexApp extends App {
       cd.setName(c.getSimpleName)
       c.getInterfaces.map(indexClass).flatMap(i=>i::i.getImplements.toList).foreach(if (c.isInterface()) cd.addExtends(_) else cd.addImplements(_))
       Option(c.getSuperclass).map(indexClass).toList.flatMap(s=>s::s.getExtends.toList).foreach(cd.addExtends(_))
-      c.getDeclaredMethods.map(indexMethod).foreach(cd.addMethod(_)) // add methods of class
-      cd.getExtends.flatMap(_.getMethods).foreach(cd.addMethod(_)) // add methods of superclass(es)
+      c.getDeclaredMethods.map(indexMethod).foreach(cd.addMethod(_))
+      cd.getExtends.flatMap(_.getMethods).foreach(cd.addMethod(_))
       c.getDeclaredFields.map(indexField).foreach(cd.addField(_))
       cd.getExtends.flatMap(_.getFields).foreach(cd.addField(_))
       cd.setAccess(indexAccess(c.getModifiers))
@@ -112,7 +115,7 @@ object IndexApp extends App {
   val libDir = new File(System.getProperty("java.home") + "/lib")
   val libJars = libDir.listFiles().filter{_.getName.endsWith(".jar")}.map{new JarFile(_)}
   val libClasses = libJars.flatMap{_.entries().map{_.getName}.filter{ _.endsWith(".class")}.map{_.replaceAll("\\.class$", "").replaceAll("/",".")}}
-  libClasses.flatMap(c => Try(cp.getCtClass(c)).toOption).map(indexClass)
+  libClasses.flatMap(c => Try(cp.getCtClass(c)).toOption).foreach(indexClass) // TODO: add progress bar
 
   println("Done parsing")
   

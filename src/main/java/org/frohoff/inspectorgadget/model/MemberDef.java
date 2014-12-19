@@ -8,6 +8,7 @@ public interface MemberDef extends BaseDef {
 	@Property("static")
 	public void setStatic(boolean s);
 	
+	// TODO: fix to be lowercase
 	@Property("access")
 	public Access getAccess();
 	@Property("access")
