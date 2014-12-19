@@ -3,7 +3,7 @@ package org.frohoff.inspectorgadget.model;
 import com.tinkerpop.frames.Adjacency;
 import com.tinkerpop.frames.modules.typedgraph.TypeValue;
 
-@TypeValue("method") public interface MethodDef extends BaseDef {
+@TypeValue("method") public interface MethodDef extends MemberDef {
   @Adjacency(label="parameterType")
   public Iterable<ClassDef> getParameterTypes();
   @Adjacency(label="parameterType")
