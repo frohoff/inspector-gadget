@@ -1,6 +1,8 @@
 inspector-gadget
 ================
 
+![Build Status](https://api.travis-ci.org/frohoff/inspector-gadget.svg?branch=master)
+
 ```
 $ mvn -q clean package exec:java -Dexec.mainClass=org.frohoff.inspectorgadget.IndexApp
 Start
